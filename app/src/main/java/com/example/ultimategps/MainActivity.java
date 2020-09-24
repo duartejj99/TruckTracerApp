@@ -8,6 +8,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import java.math.RoundingMode;
+
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -35,7 +39,8 @@ public class MainActivity extends Activity {
 
     private Object LocationManager;
     private TextView tvTim, tvLong, tvLat, etIP, etIP2, etIP3, etIP4, etPort;
-    String ipAddress1, ipAddress2, ipAddress3, ipAddress4, portServer, paquete;
+    String ipAddress1, ipAddress2, ipAddress3, ipAddress4, portServer, latitude, longitude, paquete;
+
 
 
 
@@ -54,6 +59,19 @@ public class MainActivity extends Activity {
         etIP3 = findViewById(R.id.etIP3);
         etIP4 = findViewById(R.id.etIP4);
         etPort = findViewById(R.id.etPort);
+
+        ipAddress1=etIP.getText().toString();
+        ipAddress2=etIP2.getText().toString();
+        ipAddress3=etIP3.getText().toString();
+        ipAddress4=etIP4.getText().toString();
+        portServer = etPort.getText().toString();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         //Check permission
         if (ActivityCompat.checkSelfPermission(MainActivity.this
@@ -76,10 +94,12 @@ public class MainActivity extends Activity {
 
         MessageSender messageSender = new MessageSender();
         messageSender.execute(paquete, ipAddress1, portServer);
-       MessageSender messageSender2 = new MessageSender();
+       MessageSender2 messageSender2 = new MessageSender2();
         messageSender2.execute(paquete, ipAddress2,  portServer);
-       /* MessageSender messageSender3 = new MessageSender();
-        messageSender3.execute(paquete, ipAddress3,  portServer);*/
+       MessageSender3 messageSender3 = new MessageSender3();
+        messageSender3.execute(paquete, ipAddress3,  portServer);
+        MessageSender4 messageSender4 = new MessageSender4();
+        messageSender4.execute(paquete, ipAddress4,  portServer);
 
     }
 
@@ -105,9 +125,14 @@ public class MainActivity extends Activity {
         tvLat.setText( String.valueOf(location.getLatitude()));
         tvLong.setText(String.valueOf(location.getLongitude()));
 
-        paquete= String.valueOf(location.getLatitude())+ "/"
-                 +String.valueOf(location.getLongitude())+"/"
-                +String.valueOf(formattedDate);
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
+
+
+
+        latitude = df.format(location.getLatitude());
+        longitude = df.format(location.getLongitude());
+        paquete= latitude+ "/" +longitude+"/" +String.valueOf(formattedDate);
 
 
     }
@@ -133,7 +158,7 @@ public class MainActivity extends Activity {
 
 
         mLocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER,
-                750, 0, mLocationListener);
+                5000, 20, mLocationListener);
 
     }
     private class MyLocationListener implements LocationListener {
@@ -144,18 +169,24 @@ public class MainActivity extends Activity {
         //location contiene la info de altitud, longitud, latitud, orientacion, velocidad
         public void onLocationChanged(@NonNull Location location) {
 
-            //Log.w(); //mensajes de warnings
-            //Log.e();//msj de error
+
             Log.d("GPS_Update movement", "Latitude=" + String.valueOf(location.getLatitude()));//de depuracion, solo aparecen cuando el proyecto se firma con una clave
             Log.d("GPS_Update movement", "Longitud=" + String.valueOf(location.getLongitude()));
             Log.d("GPS_Update movement", "Stamptime=" + String.valueOf(location.getTime()));
-            /*ipAddress1= "34.238.175.220";
-            ipAddress2= "190.165.37.120";
-            ipAddress3= "3.215.168.38";
-            ipAddress4= "54.144.118.222";
-            portServer="5000";*/
+
             actualizaPantalla(location);
             Enviar();
+            /*latitudant=location.getLatitude();
+            if (){
+
+
+            } else {
+                //cuando  es denegado
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                        {Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                //Hace un pedido nuevamente del permiso
+            }*/
+
             
         }
 

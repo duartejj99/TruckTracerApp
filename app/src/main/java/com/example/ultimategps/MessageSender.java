@@ -24,41 +24,60 @@ public class MessageSender extends AsyncTask<String,Void,Void> {
     protected Void doInBackground(String... voids) {
 
         String message = voids[0];
-        String ipAddress1 = voids[1];
+        String ipAddress1= voids[1] ;
         String portString = voids[2];
 
+
+
+
+
         int portServer;
-        portServer = Integer.parseInt(portString);
 
+            portServer = Integer.parseInt(portString);
 
-        try{
-            socket= new Socket(ipAddress1,portServer);
-            //DatagramSocket clientSocket = new DatagramSocket();
-
-
-
-
-            //TCP
-
-            pw= new PrintWriter(socket.getOutputStream());
-            pw.write(message);
-            pw.flush();
-            pw.close();
+            try{
+               /* socket= new Socket(ipAddress1,portServer);
 
 
 
 
 
+                //TCP
+
+                pw= new PrintWriter(socket.getOutputStream());
+                pw.write(message);
+                pw.flush();
+                pw.close();
+                socket.close();*/
 
 
-            socket.close();
-            //clientSocket.close();
+                //UDP
+                DatagramSocket clientSocket = new DatagramSocket();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+               InetAddress ipaddr = InetAddress.getByName(ipAddress1);
+
+                byte[] sendData;
 
 
-        return null;
+                sendData = message.getBytes();
+
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipaddr, 5000);
+
+                clientSocket.send(sendPacket);
+
+
+
+
+
+
+                clientSocket.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+
     }
 }

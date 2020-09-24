@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="6"
-        android:text="34.238.175.220"
+        android:text="184.72.219.165"
         android:textColorHint="@color/aqua" />
 
     <EditText
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="6"
-        android:text="54.144.118.222"
+        android:text="52.71.159.206"
         android:textColorHint="@color/aqua" />
 
     <EditText
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="6"
-        android:text="54.196.238.128"
+        android:text="50.16.251.190"
         android:textColorHint="@color/aqua" />
 
     <EditText
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:ems="6"
-        android:text="3.215.168.38"
+        android:text="54.196.238.128"
         android:textColorHint="@color/aqua" />
 
 

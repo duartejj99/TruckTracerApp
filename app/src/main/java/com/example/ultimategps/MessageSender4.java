@@ -13,7 +13,9 @@ import java.net.URL;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-public class MessageSender2 extends AsyncTask<String,Void,Void> {
+
+
+public class MessageSender4 extends AsyncTask<String,Void,Void> {
     Socket socket;
     InetAddress inetAddress;
     DataOutputStream dos;
@@ -24,7 +26,7 @@ public class MessageSender2 extends AsyncTask<String,Void,Void> {
     protected Void doInBackground(String... voids) {
 
         String message = voids[0];
-        String ipAddress2= voids[1] ;
+        String ipAddress4= voids[1] ;
         String portString = voids[2];
 
 
@@ -54,7 +56,7 @@ public class MessageSender2 extends AsyncTask<String,Void,Void> {
             //UDP
             DatagramSocket clientSocket = new DatagramSocket();
 
-            InetAddress ipaddr = InetAddress.getByName(ipAddress2);
+            InetAddress ipaddr = InetAddress.getByName(ipAddress4);
 
             byte[] sendData;
 
