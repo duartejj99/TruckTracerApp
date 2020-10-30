@@ -23,17 +23,14 @@ public class MessageSender extends AsyncTask<String,Void,Void> {
     @Override
     protected Void doInBackground(String... voids) {
 
-        String message = voids[0];
-        String ipAddress1= voids[1] ;
-        String portString = voids[2];
+            String message = voids[0];
+            String ipAddress1= voids[1] ;
 
 
 
 
 
-        int portServer;
 
-            portServer = Integer.parseInt(portString);
 
             try{
                /* socket= new Socket(ipAddress1,portServer);

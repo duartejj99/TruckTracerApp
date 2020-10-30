@@ -19,6 +19,10 @@ import java.util.TimeZone;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -38,8 +42,13 @@ import androidx.core.app.ActivityCompat;
 public class MainActivity extends Activity {
 
     private Object LocationManager;
-    private TextView tvTim, tvLong, tvLat, etIP, etIP2, etIP3, etIP4, etPort;
-    String ipAddress1, ipAddress2, ipAddress3, ipAddress4, portServer, latitude, longitude, paquete;
+    private TextView tvTim, tvLong, tvLat, etIP, etIP2, etIP3, etIP4, etPort, tvAcc;
+    String ipAddress1, ipAddress2, ipAddress3, ipAddress4, portServer, latitude, longitude, sensordata, paquete;
+    Sensor sensor;
+    SensorManager sensorManager;
+    SensorEventListener sensorEventListener;
+    double ax,ay,az;
+
 
 
 
@@ -50,10 +59,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ax=0;
         tvTim = (TextView) findViewById(R.id.tvTime);
         tvLong = findViewById(R.id.tvLong);
         tvLat = findViewById(R.id.tvLat);
+        tvAcc= findViewById(R.id.tvAcc);
+
         etIP = findViewById(R.id.etIP);
         etIP2 = findViewById(R.id.etIP2);
         etIP3 = findViewById(R.id.etIP3);
@@ -72,21 +83,71 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
+        sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor= sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        if (sensor ==null){
+            finish();
+
+        }
+
+        sensorEventListener = new SensorEventListener(){
+
+
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+
+                ax=sensorEvent.values[0];
+                ay=sensorEvent.values[1];
+                az=sensorEvent.values[2];
+                tvAcc.setText(String.valueOf(ax));
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+
+        };
+
+        start();
         //Check permission
         if (ActivityCompat.checkSelfPermission(MainActivity.this
                 , Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //Cuando el permiso este concedido habilita metodo getlocalizacion
-            configGPS();
+            configGPS();                                                        // aqui se ejecuta el CONFIG GPS()
         } else {
             //cuando  es denegado
             ActivityCompat.requestPermissions(MainActivity.this, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+
             //Hace un pedido nuevamente del permiso
         }
+
+
+       // sensorManager.registerListener((SensorEventListener) this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    private void start(){
+        sensorManager.registerListener(sensorEventListener,sensor,SensorManager.SENSOR_DELAY_NORMAL);
 
+    }
+    private void stop(){
+        sensorManager.unregisterListener(sensorEventListener);
+
+    }
+
+    protected void onPause(){
+        stop();
+        MainActivity.super.onPause();
+
+    }
+    protected void onResume(){
+        start();
+        MainActivity.super.onResume();
+
+    }
 
 
    // Automático
@@ -124,7 +185,7 @@ public class MainActivity extends Activity {
         tvTim.setText(String.valueOf(formattedDate));
         tvLat.setText( String.valueOf(location.getLatitude()));
         tvLong.setText(String.valueOf(location.getLongitude()));
-
+        tvAcc.setText(String.valueOf(ax));
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
 
@@ -132,11 +193,17 @@ public class MainActivity extends Activity {
 
         latitude = df.format(location.getLatitude());
         longitude = df.format(location.getLongitude());
-        paquete= latitude+ "/" +longitude+"/" +String.valueOf(formattedDate);
+        sensordata= df.format(ax);
+        paquete= latitude+ "/" +longitude+"/" +String.valueOf(formattedDate)+"/2/"+sensordata;
 
 
     }
+
+
     private void configGPS() {
+
+
+
 
         android.location.LocationManager mLocationManager = null;
         LocationManager = mLocationManager;
@@ -160,7 +227,14 @@ public class MainActivity extends Activity {
         mLocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER,
                 5000, 20, mLocationListener);
 
+
+
+
     }
+
+
+
+
     private class MyLocationListener implements LocationListener {
 
 
@@ -207,6 +281,8 @@ public class MainActivity extends Activity {
 
         }*/
     }
+
+
 
 
 

@@ -27,10 +27,18 @@
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/tvLong"
+    android:id="@+id/tvLong"
+    android:layout_width="250dp"
+    android:layout_height="38dp"
+    android:layout_marginBottom="60dp"
+    android:textColor="@color/aqua"
+    android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvAcc"
         android:layout_width="250dp"
         android:layout_height="38dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:textColor="@color/aqua"
         android:textStyle="italic" />
 
@@ -53,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="6"
-        android:text="184.72.219.165"
+        android:text="52.7.7.19"
         android:textColorHint="@color/aqua" />
 
     <EditText
@@ -62,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="6"
-        android:text="52.71.159.206"
+        android:text="34.237.203.211"
         android:textColorHint="@color/aqua" />
 
     <EditText
@@ -71,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:ems="6"
-        android:text="50.16.251.190"
+        android:text="54.196.238.121"
         android:textColorHint="@color/aqua" />
 
     <EditText
@@ -80,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:ems="6"
-        android:text="54.196.238.128"
+        android:text="34.235.217.46"
         android:textColorHint="@color/aqua" />
 
 

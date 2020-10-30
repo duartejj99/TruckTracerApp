@@ -25,15 +25,13 @@ public class MessageSender2 extends AsyncTask<String,Void,Void> {
 
         String message = voids[0];
         String ipAddress2= voids[1] ;
-        String portString = voids[2];
 
 
 
 
 
-        int portServer;
 
-        portServer = Integer.parseInt(portString);
+
 
         try{
                /* socket= new Socket(ipAddress1,portServer);
